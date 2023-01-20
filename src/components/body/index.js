@@ -90,12 +90,11 @@ export default function Body() {
         />
 
         <p>Timezone *</p>
-        <input
-          type="text"
-          placeholder="Timezone"
-          value={timezone}
-          onChange={(e) => setTimezone(e.target.value)}
-        />
+        <select value={timezone} onChange={e => setTimezone(e.target.value)}>
+          <option value="UTC-12">PST8PDT - 6:30AM</option>
+          <option value="UTC-11">UTC-11</option>
+          <option value="UTC-10">UTC-10</option>
+        </select>
 
         <p>Password *</p>
         <input
