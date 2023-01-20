@@ -1,6 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { signup } from "../../functions";
+import MoonLoader from "react-spinners/MoonLoader";
+import PulseLoader from "react-spinners/PulseLoader";
+
 import "./style.css";
 export default function Body() {
   const [talentSignup, setTalentSignup] = useState(false);
@@ -13,28 +16,29 @@ export default function Body() {
   const [email, setEmail] = useState("");
   const [timezone, setTimezone] = useState("");
   const [password, setPassword] = useState("");
-
-  //   console.log(firstname, lastname, email, timezone, username, password);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    // e.preventdefault()
-    if (isChecked) {
-      let data = await signup(
-        firstname,
-        lastname,
-        username,
-        email,
-        timezone,
-        password,
-        talentSignup
-      );
-      console.log("dataaaas", data.message);
-      setError(data.error);
-      setMessage(data.message);
-      console.log("message ", message);
-    } else {
-      alert("Please agree to the Terms and Condetions...");
-    }
+    setLoading(true);
+    setTimeout(async () => {
+      if (isChecked) {
+        let data = await signup(
+          firstname,
+          lastname,
+          username,
+          email,
+          timezone,
+          password,
+          talentSignup
+        );
+        setError(data.error);
+        setMessage(data.message);
+      } else {
+        alert("Please agree to the Terms and Condetions...");
+      }
+      // Do something after the loader has been shown for 2 seconds
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -90,8 +94,9 @@ export default function Body() {
         />
 
         <p>Timezone *</p>
-        <select value={timezone} onChange={e => setTimezone(e.target.value)}>
-          <option value="UTC-12">PST8PDT - 6:30AM</option>
+        <select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
+          <option value="UTC-12">Select Your Timezone</option>
+          <option value="PST8PDT - 6:30AM">PST8PDT - 6:30AM</option>
           <option value="UTC-11">UTC-11</option>
           <option value="UTC-10">UTC-10</option>
         </select>
@@ -120,7 +125,9 @@ export default function Body() {
         </p>
       </div>
       <div className="submit_btn">
-        <button onClick={handleSubmit}>SIGN UP</button>
+        <button onClick={handleSubmit} disabled={loading}>
+          {loading ? <PulseLoader color="black" size={5} /> : "Sign Up"}
+        </button>
       </div>
       <div className="way_to_login">
         <p>
