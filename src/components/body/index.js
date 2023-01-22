@@ -1,14 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { signup } from "../../functions";
-import MoonLoader from "react-spinners/MoonLoader";
 import PulseLoader from "react-spinners/PulseLoader";
 
 import "./style.css";
 export default function Body() {
   const [talentSignup, setTalentSignup] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -31,15 +30,16 @@ export default function Body() {
           password,
           talentSignup
         );
-        setError(data.error);
+        setError(data.errors);
         setMessage(data.message);
       } else {
         alert("Please agree to the Terms and Condetions...");
       }
-      // Do something after the loader has been shown for 2 seconds
       setLoading(false);
     }, 2000);
   };
+
+  console.log("error", error);
 
   return (
     <div className="main_wrapper">
@@ -69,6 +69,14 @@ export default function Body() {
           value={firstname}
           onChange={(e) => setFirstname(e.target.value)}
         />
+        {error
+          .filter((error) => error.param === "firstname")
+          .map((error, index) => (
+            <div className="error">
+              <span key={index}>{error.msg}</span>
+            </div>
+          ))}
+
         <p>Last Name *</p>
         <input
           type="text"
@@ -76,6 +84,13 @@ export default function Body() {
           value={lastname}
           onChange={(e) => setLastname(e.target.value)}
         />
+        {error
+          .filter((error) => error.param === "lastname")
+          .map((error, index) => (
+            <div className="error">
+              <span key={index}>{error.msg}</span>
+            </div>
+          ))}
 
         <p>Username *</p>
         <input
@@ -84,6 +99,13 @@ export default function Body() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        {error
+          .filter((error) => error.param === "username")
+          .map((error, index) => (
+            <div className="error">
+              <span key={index}>{error.msg}</span>
+            </div>
+          ))}
 
         <p>Email *</p>
         <input
@@ -92,6 +114,13 @@ export default function Body() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {error
+          .filter((error) => error.param === "email")
+          .map((error, index) => (
+            <div className="error">
+              <span key={index}>{error.msg}</span>
+            </div>
+          ))}
 
         <p>Timezone *</p>
         <select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
@@ -108,9 +137,16 @@ export default function Body() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className="error">{error ? <span>{error}</span> : ""}</div>
+        {error
+          .filter((error) => error.param === "password")
+          .map((error, index) => (
+            <div className="error">
+              <span key={index}>{error.msg}</span>
+            </div>
+          ))}
+
         <div className="message">
-          {!error && message ? <span>{message}</span> : ""}
+          {/* {!error && message ? <span>{message}</span> : ""} */}
         </div>
       </div>
       <div className="terms_and_condetion">
