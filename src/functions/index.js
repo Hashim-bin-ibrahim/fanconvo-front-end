@@ -21,7 +21,7 @@ export const signup = async (
         talentSignup,
       }
     );
-
+    console.log("message", data);
     return data;
   } catch (error) {
     return error.response.data.message;

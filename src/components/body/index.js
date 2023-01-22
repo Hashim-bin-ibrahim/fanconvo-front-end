@@ -30,8 +30,8 @@ export default function Body() {
           password,
           talentSignup
         );
-        setError(data.errors);
-        setMessage(data.message);
+        setError(data?.errors);
+        setMessage(data);
       } else {
         alert("Please agree to the Terms and Condetions...");
       }
@@ -40,6 +40,7 @@ export default function Body() {
   };
 
   console.log("error", error);
+  console.log("message......", message);
 
   return (
     <div className="main_wrapper">
@@ -70,7 +71,7 @@ export default function Body() {
           onChange={(e) => setFirstname(e.target.value)}
         />
         {error
-          .filter((error) => error.param === "firstname")
+          ?.filter((error) => error.param === "firstname")
           .map((error, index) => (
             <div className="error">
               <span key={index}>{error.msg}</span>
@@ -85,7 +86,7 @@ export default function Body() {
           onChange={(e) => setLastname(e.target.value)}
         />
         {error
-          .filter((error) => error.param === "lastname")
+          ?.filter((error) => error.param === "lastname")
           .map((error, index) => (
             <div className="error">
               <span key={index}>{error.msg}</span>
@@ -100,7 +101,7 @@ export default function Body() {
           onChange={(e) => setUsername(e.target.value)}
         />
         {error
-          .filter((error) => error.param === "username")
+          ?.filter((error) => error.param === "username")
           .map((error, index) => (
             <div className="error">
               <span key={index}>{error.msg}</span>
@@ -115,7 +116,7 @@ export default function Body() {
           onChange={(e) => setEmail(e.target.value)}
         />
         {error
-          .filter((error) => error.param === "email")
+          ?.filter((error) => error.param === "email")
           .map((error, index) => (
             <div className="error">
               <span key={index}>{error.msg}</span>
@@ -138,7 +139,7 @@ export default function Body() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {error
-          .filter((error) => error.param === "password")
+          ?.filter((error) => error.param === "password")
           .map((error, index) => (
             <div className="error">
               <span key={index}>{error.msg}</span>
@@ -146,7 +147,17 @@ export default function Body() {
           ))}
 
         <div className="message">
-          {/* {!error && message ? <span>{message}</span> : ""} */}
+          {!error && message ? (
+            <span>
+              {message?.message ? (
+                message?.message
+              ) : (
+                <span className="error">{message?.error}</span>
+              )}
+            </span>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="terms_and_condetion">
